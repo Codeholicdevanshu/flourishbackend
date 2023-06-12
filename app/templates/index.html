@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://cdn.flourish.rocks/flourish-live-v4.6.1.min.js"></script>
+<body>
+    <div id="chart">
+
+    </div>
+</body>
+
+<script>
+    const opts = {
+  template: "@flourish/line-bar-pie",
+  version: "25.0.5",
+  container: "#chart",
+  api_key: "qkHM-wY20jommCekPI007E6VSaaQ3rm0_UBUuW4p012j422dWhWnkhxeXMicFt4Q",
+  bindings: {
+    data: {
+      x: "pos_x",
+      y: "pos_y",
+      metadata: ["country"]
+    }
+  },
+  data: {
+    data: [
+      { country: "Argentina", pos_x: 1, pos_y: 2 },
+      { country: "Brazil", pos_x: 2, pos_y: 4 },
+      { country: "Colombia", pos_x: 3, pos_y: 9 },
+    ]
+  },
+  state: {
+    "chart_type": "column_grouped",
+    layout: {
+      title: "This is an API Example"
+    }
+  }
+};
+    fetch('http://127.0.0.1:8000/api/country',{
+        //method:"GET",
+        headers:{
+            'Content-Type':'application/json'
+        },
+        //body:JSON.stringify(opts.data)
+
+    })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Error: ' + response.status);
+    }
+  })
+  .then(data => {
+    // Process the returned data
+    console.log(data);
+     // Update the data property of opts
+     opts.data.data = data;
+     var flourish_visualisation = new Flourish.Live(opts);
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the request
+    console.error('Error:', error);
+  });
+    
+</script>
+</html>
